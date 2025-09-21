@@ -1,5 +1,6 @@
 ﻿using MauiAppTempo.Models;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace MauiAppTempo.Services
 {
@@ -13,6 +14,7 @@ namespace MauiAppTempo.Services
             string url = $"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={chave}&units=metric&lang=pt_br";
 
             using HttpClient client = new HttpClient();
+            try
             {
                 HttpResponseMessage resp = await client.GetAsync(url);
 
@@ -37,9 +39,24 @@ namespace MauiAppTempo.Services
                         visibility = (int)rascunho["visibility"],
                         sunrise = sunrise.ToString("HH:mm"),
                         sunset = sunset.ToString("HH:mm"),
-                    }; //Fecha obj do tempo.
-                } //fecha if se o status do servidor foi de sucesso
-            } // fec
+                    };
+                }
+                else if (resp.StatusCode == HttpStatusCode.NotFound)
+                {
+                    // Cidade não encontrada
+                    throw new Exception("Cidade não encontrada. Verifique o nome digitado.");
+                }
+                else
+                {
+                    // Outros erros da API
+                    throw new Exception($"Erro ao buscar dados do clima. Código: {(int)resp.StatusCode}");
+                }
+            }
+            catch (HttpRequestException)
+            {
+                // Sem internet
+                throw new Exception("Sem conexão com a internet.");
+            }
 
             return t;
         }

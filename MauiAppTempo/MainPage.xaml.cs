@@ -25,7 +25,8 @@ namespace MauiAppTempo
                     {
                         string dados_previsao = "";
 
-                        dados_previsao = $" Latitude: {t.lat}\n Longitude: {t.lon}\n Nascer do Sol: {t.sunrise}hrs\n Por do Sol: {t.sunset}hrs\n Temp Máx: {t.temp_max}\n Temp Min: {t.temp_min}\n Descrição: {t.description}\n";
+                        dados_previsao = $" Latitude: {t.lat}\n Longitude: {t.lon}\n Nascer do Sol: {t.sunrise}hrs\n Por do Sol: {t.sunset}hrs\n Temp Máx: {t.temp_max}\n Temp Min: {t.temp_min}\n Descrição: {t.description}\n" +
+                                            $" Velocidade do vento: {t.speed}\n Visibilidade: {t.visibility} \n";
 
 
                         lbl_res.Text = dados_previsao;
